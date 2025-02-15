@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tìm Kiếm Sinh Viên</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Tìm Kiếm Sinh Viên</h1>
+    <div class="form-container">
+        <label>Nhập MSSV:</label>
+        <input type="text" id="studentId" required>
+        <button onclick="searchStudent()">Tìm kiếm</button>
+    </div>
+
+    <div id="searchResults"></div>
+
+    <div class="container">
+        <a href="home.html">Quay lại Trang Chính</a>
+    </div>
+
+    <script>
+        async function searchStudent() {
+            const studentId = document.getElementById("studentId").value.trim();
+
+            if (!studentId) {
+                alert("MSSV không thể để trống");
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:3000/students/${studentId}`); 
+                const student = await response.json();
+
+                if (!response.ok || !student) {
+                    alert("Không tìm thấy sinh viên với MSSV này.");
+                    return;
+                }
+
+                displaySearchResults(student);
+            } catch (error) {
+                console.error("Lỗi khi gửi request:", error);
+                alert("Lỗi khi tìm kiếm.");
+            }
+        }
+
+        function displaySearchResults(student) {
+            const resultsContainer = document.getElementById("searchResults");
+            resultsContainer.innerHTML = "";
+
+            const table = document.createElement("table");
+            const headerRow = document.createElement("tr");
+            headerRow.innerHTML = "<th>MSSV</th><th>Họ Tên</th><th>Email</th><th>Số Điện Thoại</th><th>Trạng Thái</th>";
+            table.appendChild(headerRow);
+
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${student.studentId}</td>
+                <td>${student.fullName}</td>
+                <td>${student.email}</td>
+                <td>${student.phone}</td>
+                <td>${student.status}</td>
+            `;
+            table.appendChild(row);
+
+            resultsContainer.appendChild(table);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cập Nhật Sinh Viên</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Cập Nhật Sinh Viên</h1>
+    <div class="form-container">
+        <label>MSSV:</label>
+        <input type="text" id="updateStudentId" required>
+        <button onclick="fetchStudentDetails()">Tìm Sinh Viên</button>
+        
+        <label>Họ tên:</label>
+        <input type="text" id="updateFullName">
+        
+        <label>Ngày sinh:</label>
+        <input type="date" id="updateBirthDate">
+        
+        <label>Giới tính:</label>
+        <select id="updateGender">
+            <option value="Nam">Nam</option>
+            <option value="Nữ">Nữ</option>
+        </select>
+
+        <label>Email:</label>
+        <input type="email" id="updateEmail">
+        
+        <label>Số điện thoại:</label>
+        <input type="text" id="updatePhone">
+        
+        <label>Trạng thái:</label>
+        <select id="updateStatus">
+            <option value="Đang học">Đang học</option>
+            <option value="Đã tốt nghiệp">Đã tốt nghiệp</option>
+            <option value="Đã thôi học">Đã thôi học</option>
+            <option value="Tạm dừng học">Tạm dừng học</option>
+        </select>
+
+        <button onclick="updateStudent()">Cập nhật</button>
+    </div>
+    <div class="container">
+        <a href="home.html">Quay lại Trang Chính</a>
+    </div>
+
+    <script>
+        async function fetchStudentDetails() {
+            const studentId = document.getElementById("updateStudentId").value.trim();
+
+            try {
+                const response = await fetch(`http://localhost:3000/students/${studentId}`);
+                const student = await response.json();
+                if (!response.ok) {
+                    alert(student.message || "Không tìm thấy sinh viên.");
+                    return;
+                }
+
+                document.getElementById("updateFullName").value = student.fullName;
+                document.getElementById("updateBirthDate").value = student.birthDate.split('T')[0];
+                document.getElementById("updateGender").value = student.gender;
+                document.getElementById("updateEmail").value = student.email;
+                document.getElementById("updatePhone").value = student.phone;
+                document.getElementById("updateStatus").value = student.status;
+            } catch (error) {
+                console.error("Lỗi khi gửi request:", error);
+                alert("Lỗi khi tìm kiếm sinh viên.");
+            }
+        }
+
+        async function updateStudent() {
+            const studentId = document.getElementById("updateStudentId").value.trim();
+            const studentData = {
+                fullName: document.getElementById("updateFullName").value.trim(),
+                birthDate: document.getElementById("updateBirthDate").value,
+                gender: document.getElementById("updateGender").value,
+                email: document.getElementById("updateEmail").value.trim(),
+                phone: document.getElementById("updatePhone").value.trim(),
+                status: document.getElementById("updateStatus").value
+            };
+
+            try {
+                const response = await fetch(`http://localhost:3000/students/${studentId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(studentData)
+                });
+
+                const result = await response.json();
+                if (!response.ok) {
+                    alert(result.message || "Không thể cập nhật thông tin sinh viên.");
+                    return;
+                }
+
+                alert("Cập nhật thông tin sinh viên thành công!");
+            } catch (error) {
+                console.error("Lỗi khi gửi request:", error);
+                alert("Lỗi khi cập nhật sinh viên.");
+            }
+        }
+    </script>
+</body>
+</html>

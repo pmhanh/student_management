@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xóa Sinh Viên</title>
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+    <h1>Xóa Sinh Viên</h1>
+    <div class="form-container">
+        <label>MSSV:</label>
+        <input type="text" id="deleteStudentId" required>
+        <button onclick="deleteStudent()">Xóa</button>
+    </div>
+    <div class="container">
+        <a href="home.html">Quay lại Trang Chính</a>
+    </div>
+
+    <script>
+        async function deleteStudent() {
+            const studentId = document.getElementById("deleteStudentId").value.trim();
+
+            try {
+                const response = await fetch(`http://localhost:3000/students/${studentId}`, {
+                    method: "DELETE"
+                });
+
+                const result = await response.json();
+                if (!response.ok) {
+                    alert(result.message || "Không thể xóa sinh viên.");
+                    return;
+                }
+
+                alert("Sinh viên đã được xóa.");
+            } catch (error) {
+                console.error("Lỗi khi gửi request:", error);
+                alert("Lỗi khi xóa sinh viên.");
+            }
+        }
+    </script>
+</body>
+</html>

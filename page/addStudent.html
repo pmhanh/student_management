@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Sinh viên</title>
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+    <h1>Quản lý Sinh viên</h1>
+    <div id="errorMessages"></div>
+
+    <div class="form-container">
+        <h2>Thêm / Cập nhật Sinh viên</h2>
+        <label>MSSV:</label>
+        <input type="text" id="studentId" required>
+        
+        <label>Họ tên:</label>
+        <input type="text" id="fullName" required>
+
+        <label>Ngày sinh:</label>
+        <input type="date" id="birthDate">
+
+        <label>Giới tính:</label>
+        <select id="gender">
+            <option value="Nam">Nam</option>
+            <option value="Nữ">Nữ</option>
+        </select>
+
+        <label>Khoa:</label>
+        <select id="department">
+            <option value="Khoa Luật">Khoa Luật</option>
+            <option value="Khoa Tiếng Anh thương mại">Khoa Tiếng Anh thương mại</option>
+            <option value="Khoa Tiếng Nhật">Khoa Tiếng Nhật</option>
+            <option value="Khoa Tiếng Pháp">Khoa Tiếng Pháp</option>
+        </select>
+        <label>Khóa:</label>
+        <input type="text" id="course" required>
+        <label>Chương trình:</label>
+        <input type="text" id="program" required>
+        <label>Email:</label>
+        <input type="email" id="email" required>
+
+        <label>Số điện thoại:</label>
+        <input type="text" id="phone" required>
+
+        <label>Trạng thái:</label>
+        <select id="status">
+            <option value="Đang học">Đang học</option>
+            <option value="Đã tốt nghiệp">Đã tốt nghiệp</option>
+            <option value="Đã thôi học">Đã thôi học</option>
+            <option value="Tạm dừng học">Tạm dừng học</option>
+        </select>
+
+        <button onclick="addOrUpdateStudent()">Lưu</button>
+    </div>
+
+    <script>
+        async function addOrUpdateStudent() {
+            const studentData = {
+                studentId: document.getElementById("studentId").value.trim(),
+                fullName: document.getElementById("fullName").value.trim(),
+                birthDate: document.getElementById("birthDate").value,
+                gender: document.getElementById("gender").value,
+                department: document.getElementById("department").value,
+                course: document.getElementById("course").value,
+                program: document.getElementById("program").value,
+                email: document.getElementById("email").value.trim(),
+                phone: document.getElementById("phone").value.trim(),
+                status: document.getElementById("status").value
+            };
+
+            try {
+                const response = await fetch("http://localhost:3000/students", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(studentData)
+                });
+
+                const result = await response.json();
+                if (!response.ok) {
+                    showValidationErrors([result.message]); 
+                    return;
+                }
+
+                alert("Thêm/Cập nhật sinh viên thành công!");
+                document.getElementById("errorMessages").innerHTML = "";
+            } catch (error) {
+                console.error("Lỗi khi gửi request:", error);
+                showValidationErrors(["Lỗi không xác định"]); 
+            }
+        }
+
+        function showValidationErrors(errors) {
+            const errorContainer = document.getElementById("errorMessages");
+            errorContainer.innerHTML = "";
+
+            errors.forEach(error => {
+                const errorElement = document.createElement("p");
+                errorElement.textContent = error;
+                errorContainer.appendChild(errorElement);
+            });
+        }
+
+    </script>
+</body>
+</html>
