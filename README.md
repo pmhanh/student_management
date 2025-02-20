@@ -14,17 +14,25 @@ Dùng NestJS, TypeScript và mongoDB
 - schema: Định nghĩa các schema của MongoDB cho sinh viên.
 - dto: Data Transfer Objects dùng để xác định cấu trúc dữ liệu khi nhận hoặc trả về dữ liệu.
 
-### Ảnh: folder screenshots
-Chứa hình ảnh minh chứng
+### Ảnh: folder screenshots Chứa hình ảnh minh chứng
+- Trang chủ
 ![Trang chủ](screenshots/homepage.png)
+- Giao diện thêm sinh viên mới
 ![Giao diện thêm sinh viên mới](screenshots/addStudent.PNG)
+- Thêm sinh viên mới
 ![Thêm sinh viên mới](screenshots/demoAddStudent.PNG)
+- Giao diện xóa sinh viên
 ![Giao diện xóa sinh viên](screenshots/deleteStudent.PNG)
+- Xóa sinh viên
 ![Xóa sinh viên](screenshots/demoDeleteStudent.PNG)
-![Giao diên tìm kiếm sinh viên](screenshots/findStudent.PNG)
+- Giao diện tìm kiếm sinh viên
+![Giao diện tìm kiếm sinh viên](screenshots/findStudent.PNG)
+- Tìm kiếm sinh viên
 ![Tìm kiếm sinh viên](screenshots/demoFindStudent.PNG)
-![Giao diên câp nhật sinh viên](screenshots/updateStudent.PNG)
-![Câp nhật sinh viên](screenshots/demoUpdateStudent.PNG)
+- Giao diên cập nhật sinh viên
+![Giao diên cập nhật sinh viên](screenshots/updateStudent.PNG)
+- Cập nhật sinh viên
+![Cập nhật sinh viên](screenshots/demoUpdateStudent.PNG)
 ## Cài Đặt và Chạy Ứng Dụng
 
 ### 1. Cài Đặt Backend
