@@ -38,6 +38,9 @@
             <option value="Đã thôi học">Đã thôi học</option>
             <option value="Tạm dừng học">Tạm dừng học</option>
         </select>
+        <!-- <label for="status">Trạng thái:</label>
+        <select id="status" name="status" required>
+        </select> -->
 
         <button onclick="updateStudent()">Cập nhật</button>
     </div>
@@ -46,7 +49,23 @@
     </div>
 
     <script>
-        
+        // async function fetchStatus() {
+        //     try {
+        //         const response = await fetch('http://localhost:3000/status');
+        //         const statuses = await response.json();
+        //         const statusSelect = document.getElementById('status');
+                
+        //         statuses.forEach(status => {
+        //         const option = document.createElement('option');
+        //         option.value = status._id;
+        //         option.textContent = status.name;
+        //         statusSelect.appendChild(option);
+        //         });
+        //     } catch (error) {
+        //         console.error('Error fetching faculties:', error);
+        //     }
+        // }
+        // fetchStatus();
         async function fetchStudentDetails() {
             const studentId = document.getElementById("updateStudentId").value.trim();
 

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thêm chương trình đạo tào</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="form-container">
+    <h1>Thêm chương trình đào tạo</h1>
+    <form id="addProgramForm">
+      <label for="name">Tên chương trình:</label>
+      <input type="text" id="name" name="name" required>
+      <button type="submit">Thêm chương trình</button>
+    </form>
+  </div>
+  
+  <script>
+    document.getElementById('addProgramForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      try {
+        const response = await fetch('http://localhost:3000/program', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name }),
+        });
+        if (response.ok) {
+          alert('Thêm chương trình thành công');
+        } else {
+          alert('Thêm chương trình thất bại');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Thêm chương trình thất bại');
+      }
+    });
+  </script>
+</body>
+</html>

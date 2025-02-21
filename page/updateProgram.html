@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cập nhật chương trình đạo tào</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="form-container">
+    <h1>Cập nhật chương trình đào tạo</h1>
+    <form id="updateProgramForm">
+      <label for="name">Tên chương trình cũ:</label>
+      <input type="text" id="name" name="name" required>
+      <label for="updateProgramName">Tên chương trình mới muốn cập nhật:</label>
+      <input type="text" id="updateProgramName" name="updateProgramName" required>
+      <button type="submit">Cập nhật</button>
+    </form>
+  </div>
+  
+  <script>
+    document.getElementById('updateProgramForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const updateProgramName = document.getElementById('updateProgramName').value.trim();
+      try {
+        const response = await fetch(`http://localhost:3000/program/${name}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name: updateProgramName }),
+        });
+        if (response.ok) {
+          alert('Cập nhật chương trình thành công');
+        } else if (response.status === 404) {
+          alert('Chương trình không tồn tại');
+        } else {
+          alert('Cập nhật chương trình thất bại');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Cập nhật chương trình thất bại');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -10,6 +10,7 @@ export class StudentController {
     @Post()
     async create(@Body() studentData: CreateStudentDto) {
         try {
+            console.log(studentData);
             return await this.studentService.createStudent(studentData);
         } catch (error) {
             if (error.response && error.response.message) {
