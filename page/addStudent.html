@@ -11,7 +11,7 @@
     <div id="errorMessages"></div>
 
     <div class="form-container">
-        <h2>Thêm / Cập nhật Sinh viên</h2>
+        <h2>Thêm Sinh viên</h2>
         <label>MSSV:</label>
         <input type="text" id="studentId" required>
         
@@ -79,7 +79,7 @@
                     return;
                 }
 
-                alert("Thêm/Cập nhật sinh viên thành công!");
+                alert("Thêm sinh viên thành công!");
                 document.getElementById("errorMessages").innerHTML = "";
             } catch (error) {
                 console.error("Lỗi khi gửi request:", error);

@@ -10,8 +10,20 @@
     <h1>Tìm Kiếm Sinh Viên</h1>
     <div class="form-container">
         <label>Nhập MSSV:</label>
-        <input type="text" id="studentId" required>
-        <button onclick="searchStudent()">Tìm kiếm</button>
+        <input type="text" id="studentId">
+        <button onclick="searchStudentById()">Tìm kiếm</button>
+
+        <hr>
+        <label>Chọn Khoa:</label>
+        <select id="facultySelect"></select>
+        <button onclick="searchByFaculty()">Tìm kiếm theo Khoa</button>
+
+        <hr>
+        <label>Chọn Khoa:</label>
+        <select id="facultySelectByName"></select>
+        <label>Nhập Tên Sinh Viên:</label>
+        <input type="text" id="studentName">
+        <button onclick="searchByFacultyAndName()">Tìm kiếm theo Khoa và Tên</button>
     </div>
 
     <div id="searchResults"></div>
@@ -21,35 +33,93 @@
     </div>
 
     <script>
-        async function searchStudent() {
-            const studentId = document.getElementById("studentId").value.trim();
+        async function fetchFaculties() {
+            try {
+                const response = await fetch('http://localhost:3000/faculty');
+                const faculties = await response.json();
+                const facultySelect = document.getElementById('facultySelect');
+                const facultySelectByName = document.getElementById('facultySelectByName');
+                
+                faculties.forEach(faculty => {
+                    const option = document.createElement('option');
+                    option.value = faculty._id;
+                    option.textContent = faculty.name;
+                    facultySelect.appendChild(option);
+                    facultySelectByName.appendChild(option.cloneNode(true));
+                });
+            } catch (error) {
+                console.error('Error fetching faculties:', error);
+            }
+        }
 
+        async function searchStudentById() {
+            const studentId = document.getElementById("studentId").value.trim();
             if (!studentId) {
                 alert("MSSV không thể để trống");
                 return;
             }
-
             try {
-                const response = await fetch(`http://localhost:3000/students/${studentId}`); 
+                const response = await fetch(`http://localhost:3000/students/${studentId}`);
                 const student = await response.json();
-
                 if (!response.ok || !student) {
                     alert("Không tìm thấy sinh viên với MSSV này.");
                     return;
                 }
-                console.log(student);
-                console.log(student.faculty.name);
-                displaySearchResults(student);
+                displaySearchResults([student]);
             } catch (error) {
                 console.error("Lỗi khi gửi request:", error);
                 alert("Lỗi khi tìm kiếm.");
             }
         }
 
-        function displaySearchResults(student) {
+        async function searchByFaculty() {
+            const facultyId = document.getElementById("facultySelect").value;
+            if (!facultyId) {
+                alert("Vui lòng chọn khoa");
+                return;
+            }
+            try {
+                const response = await fetch(`http://localhost:3000/students?faculty=${facultyId}`);
+                const students = await response.json();
+                if (!response.ok || !students.length) {
+                    alert("Không tìm thấy sinh viên với khoa này.");
+                    return;
+                }
+                displaySearchResults(students);
+            } catch (error) {
+                console.error("Lỗi khi gửi request:", error);
+                alert("Lỗi khi tìm kiếm.");
+            }
+        }
+
+        async function searchByFacultyAndName() {
+            const facultyId = document.getElementById("facultySelectByName").value;
+            const studentName = document.getElementById("studentName").value.trim();
+            if (!facultyId || !studentName) {
+                alert("Vui lòng chọn khoa và nhập tên sinh viên");
+                return;
+            }
+            try {
+                const response = await fetch(`http://localhost:3000/students?faculty=${facultyId}&name=${studentName}`);
+                const students = await response.json();
+                if (!response.ok || !students.length) {
+                    alert("Không tìm thấy sinh viên với khoa và tên này.");
+                    return;
+                }
+                displaySearchResults(students);
+            } catch (error) {
+                console.error("Lỗi khi gửi request:", error);
+                alert("Lỗi khi tìm kiếm.");
+            }
+        }
+
+        function displaySearchResults(students) {
             const resultsContainer = document.getElementById("searchResults");
             resultsContainer.innerHTML = "";
-
+            if (students.length === 0) {
+                resultsContainer.textContent = "Không tìm thấy sinh viên.";
+                return;
+            }
             const table = document.createElement("table");
             const headerRow = document.createElement("tr");
             headerRow.innerHTML = `
@@ -66,24 +136,25 @@
             `;
             table.appendChild(headerRow);
 
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${student.studentId}</td>
-                <td>${student.fullName}</td>
-                <td>${new Date(student.birthDate).toLocaleDateString()}</td>
-                <td>${student.gender}</td>
-                <td>${student.email}</td>
-                <td>${student.phone}</td>
-                <td>${student.faculty.name}</td>
-                <td>${student.course}</td>
-                <td>${student.program.name}</td>
-                <td>${student.status.name}</td>
-            `;
-            table.appendChild(row);
-
+            students.forEach(student => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${student.studentId}</td>
+                    <td>${student.fullName}</td>
+                    <td>${new Date(student.birthDate).toLocaleDateString()}</td>
+                    <td>${student.gender}</td>
+                    <td>${student.email}</td>
+                    <td>${student.phone}</td>
+                    <td>${student.faculty.name}</td>
+                    <td>${student.course}</td>
+                    <td>${student.program.name}</td>
+                    <td>${student.status.name}</td>
+                `;
+                table.appendChild(row);
+            });
             resultsContainer.appendChild(table);
         }
-        
+        fetchFaculties();
     </script>
 </body>
 </html>

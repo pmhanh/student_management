@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/student.dto';
 import { BadRequestException } from '@nestjs/common';
@@ -22,8 +22,14 @@ export class StudentController {
     }
 
     @Get()
-    findAll() {
-        return this.studentService.getStudents();
+    find(@Query('faculty') faculty?: string, @Query('name') name?: string) {
+        if (faculty && name) {
+            return this.studentService.findByFacultyAndName(faculty, name);
+        } else if (faculty) {
+            return this.studentService.findByFaculty(faculty);
+        } else {
+            return this.studentService.getStudents();
+        }
     }
 
     @Get(':studentId')

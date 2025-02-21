@@ -59,6 +59,15 @@ export class StudentService {
     async getStudentById(studentId: string): Promise<Student | null> {
         return this.studentModel.findOne({ studentId }).populate('faculty program status').exec();
     }
+
+    async findByFaculty(facultyId: string): Promise<Student[]> {
+        return this.studentModel.find({ faculty: facultyId }).populate('faculty program status').exec();
+    }
+
+    async findByFacultyAndName(facultyName: string, name: string): Promise<Student[]> {
+        return this.studentModel.find({ faculty: facultyName, fullName: { $regex: name, $options: 'i' } }).populate('faculty program status').exec();
+    }
+
     async updateStudent(studentId: string, updateData: any): Promise<Student | null> {
         await this.checkDuplicate1(updateData, studentId);
         return this.studentModel.findOneAndUpdate({ studentId }, updateData, { new: true }).exec();
