@@ -44,14 +44,21 @@ export class StudentService {
         return newStudent.save();
     }
 
+    // async getStudents(): Promise<Student[]> {
+    //     return this.studentModel.find().exec();
+    // }
+
+    // async getStudentById(studentId: string): Promise<Student | null> {
+    //     return this.studentModel.findOne({ studentId }).exec();
+    // }
+
     async getStudents(): Promise<Student[]> {
-        return this.studentModel.find().exec();
+        return this.studentModel.find().populate('faculty program status').exec();
     }
 
     async getStudentById(studentId: string): Promise<Student | null> {
-        return this.studentModel.findOne({ studentId }).exec();
+        return this.studentModel.findOne({ studentId }).populate('faculty program status').exec();
     }
-
     async updateStudent(studentId: string, updateData: any): Promise<Student | null> {
         await this.checkDuplicate1(updateData, studentId);
         return this.studentModel.findOneAndUpdate({ studentId }, updateData, { new: true }).exec();

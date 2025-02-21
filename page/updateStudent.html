@@ -25,22 +25,26 @@
             <option value="Nữ">Nữ</option>
         </select>
 
+        <label for="faculty">Khoa:</label>
+        <select id="updateFaculty" name="faculty" required>
+        </select>
+
+        <label>Khóa:</label>
+        <input type="text" id="updateCourse" required>
+
+        <label for="program">Chương trình đào tạo:</label>
+        <select id="updateProgram" name="program" required>
+        </select>
+
         <label>Email:</label>
         <input type="email" id="updateEmail">
         
         <label>Số điện thoại:</label>
         <input type="text" id="updatePhone">
         
-        <label>Trạng thái:</label>
-        <select id="updateStatus">
-            <option value="Đang học">Đang học</option>
-            <option value="Đã tốt nghiệp">Đã tốt nghiệp</option>
-            <option value="Đã thôi học">Đã thôi học</option>
-            <option value="Tạm dừng học">Tạm dừng học</option>
+        <label for="status">Trạng thái:</label>
+        <select id="updateStatus" name="status" required>
         </select>
-        <!-- <label for="status">Trạng thái:</label>
-        <select id="status" name="status" required>
-        </select> -->
 
         <button onclick="updateStudent()">Cập nhật</button>
     </div>
@@ -49,23 +53,57 @@
     </div>
 
     <script>
-        // async function fetchStatus() {
-        //     try {
-        //         const response = await fetch('http://localhost:3000/status');
-        //         const statuses = await response.json();
-        //         const statusSelect = document.getElementById('status');
+        async function fetchFaculties() {
+            try {
+                const response = await fetch('http://localhost:3000/faculty');
+                const faculties = await response.json();
+                const facultySelect = document.getElementById('updateFaculty');
                 
-        //         statuses.forEach(status => {
-        //         const option = document.createElement('option');
-        //         option.value = status._id;
-        //         option.textContent = status.name;
-        //         statusSelect.appendChild(option);
-        //         });
-        //     } catch (error) {
-        //         console.error('Error fetching faculties:', error);
-        //     }
-        // }
-        // fetchStatus();
+                faculties.forEach(faculty => {
+                    const option = document.createElement('option');
+                    option.value = faculty._id;
+                    option.textContent = faculty.name;
+                    facultySelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching faculties:', error);
+            }
+        }
+
+        async function fetchPrograms() {
+            try {
+                const response = await fetch('http://localhost:3000/program');
+                const programs = await response.json();
+                const programSelect = document.getElementById('updateProgram');
+                
+                programs.forEach(program => {
+                    const option = document.createElement('option');
+                    option.value = program._id;
+                    option.textContent = program.name;
+                    programSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching programs:', error);
+            }
+        }
+
+        async function fetchStatuses() {
+            try {
+                const response = await fetch('http://localhost:3000/status');
+                const statuses = await response.json();
+                const statusSelect = document.getElementById('updateStatus');
+                
+                statuses.forEach(status => {
+                    const option = document.createElement('option');
+                    option.value = status._id;
+                    option.textContent = status.name;
+                    statusSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching statuses:', error);
+            }
+        }
+
         async function fetchStudentDetails() {
             const studentId = document.getElementById("updateStudentId").value.trim();
 
@@ -83,6 +121,9 @@
                 document.getElementById("updateEmail").value = student.email;
                 document.getElementById("updatePhone").value = student.phone;
                 document.getElementById("updateStatus").value = student.status;
+                document.getElementById("updateFaculty").value = student.faculty;
+                document.getElementById("updateCourse").value = student.course;
+                document.getElementById("updateProgram").value = student.program;
             } catch (error) {
                 console.error("Lỗi khi gửi request:", error);
                 alert("Lỗi khi tìm kiếm sinh viên.");
@@ -97,7 +138,10 @@
                 gender: document.getElementById("updateGender").value,
                 email: document.getElementById("updateEmail").value.trim(),
                 phone: document.getElementById("updatePhone").value.trim(),
-                status: document.getElementById("updateStatus").value
+                status: document.getElementById("updateStatus").value,
+                faculty: document.getElementById("updateFaculty").value,
+                course: document.getElementById("updateCourse").value,
+                program: document.getElementById("updateProgram").value
             };
 
             try {
@@ -119,6 +163,10 @@
                 alert("Lỗi khi cập nhật sinh viên.");
             }
         }
+
+        fetchFaculties();
+        fetchPrograms();
+        fetchStatuses();
     </script>
 </body>
 </html>

@@ -1,4 +1,5 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsPhoneNumber, Matches, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsPhoneNumber, Matches } from 'class-validator';
+import { Types } from 'mongoose';
 
 export class CreateStudentDto {
     @IsNotEmpty({ message: 'MSSV không được để trống' })
@@ -13,14 +14,14 @@ export class CreateStudentDto {
     @IsEnum(['Nam', 'Nữ'], { message: 'Giới tính phải là Nam hoặc Nữ' })
     gender: string;
 
-    @IsEnum(['Khoa Luật', 'Khoa Tiếng Anh thương mại', 'Khoa Tiếng Nhật', 'Khoa Tiếng Pháp'], { message: 'Khoa không hợp lệ' })
-    department: string;
+    @IsNotEmpty({ message: 'Khoa không được để trống' })
+    faculty: Types.ObjectId;
 
     @IsNotEmpty({ message: 'Khóa không được để trống' })
     course: string;
 
     @IsNotEmpty({ message: 'Chương trình không được để trống' })
-    program: string;
+    program: Types.ObjectId;
 
     @IsOptional()
     address?: string;
@@ -33,6 +34,6 @@ export class CreateStudentDto {
     @Matches(/^[0-9]{10,11}$/, { message: 'Số điện thoại phải có 10-11 chữ số' })
     phone: string;
 
-    @IsEnum(['Đang học', 'Đã tốt nghiệp', 'Đã thôi học', 'Tạm dừng học'], { message: 'Trạng thái không hợp lệ' })
-    status: string;
+    @IsNotEmpty({ message: 'Trạng thái không được để trống' })
+    status: Types.ObjectId;
 }

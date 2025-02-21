@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 export type StudentDocument = Student & Document;
 
@@ -17,14 +17,14 @@ export class Student {
     @Prop({ required: true, enum: ['Nam', 'Nữ'] })
     gender: string;
 
-    @Prop({ required: true, enum: ['Khoa Luật', 'Khoa Tiếng Anh thương mại', 'Khoa Tiếng Nhật', 'Khoa Tiếng Pháp'] })
-    department: string;
+    @Prop({ type: Types.ObjectId, ref: 'Faculty', required: true })
+    faculty: Types.ObjectId;
 
     @Prop({ required: true })
     course: string;
 
-    @Prop({ required: true })
-    program: string;
+    @Prop({ type: Types.ObjectId, ref: 'Program', required: true })
+    program: Types.ObjectId;
 
     @Prop()
     address: string;
@@ -35,8 +35,8 @@ export class Student {
     @Prop({ required: true, match: /^[0-9]{10,11}$/ })
     phone: string;
 
-    @Prop({ required: true, enum: ['Đang học', 'Đã tốt nghiệp', 'Đã thôi học', 'Tạm dừng học'] })
-    status: string;
+    @Prop({ type: Types.ObjectId, ref: 'Status', required: true })
+    status: Types.ObjectId;
 }
 
 export const StudentSchema = SchemaFactory.createForClass(Student);

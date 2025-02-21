@@ -10,6 +10,7 @@ export class StudentController {
     @Post()
     async create(@Body() studentData: CreateStudentDto) {
         try {
+            console.log("1");
             console.log(studentData);
             return await this.studentService.createStudent(studentData);
         } catch (error) {
@@ -30,11 +31,11 @@ export class StudentController {
         return this.studentService.getStudentById(studentId);
     }
 
+    
     @Put(':studentId')
     update(@Param('studentId') studentId: string, @Body() updateData: any) {
         return this.studentService.updateStudent(studentId, updateData);
     }
-
     @Delete(':studentId')
     remove(@Param('studentId') studentId: string) {
         return this.studentService.deleteStudent(studentId);
