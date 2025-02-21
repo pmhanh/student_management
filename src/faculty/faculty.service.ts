@@ -26,15 +26,12 @@ export class FacultyService {
         if (!faculty) {
             console.log("sai");
             throw new NotFoundException("Khoa không tồn tại");
-            // throw new Error("Khoa không tồn tại");
         }
         else
         {
             faculty.name = newFacultyName;
             const updatedFaculty = await faculty.save();
         
-            // In ra kết quả để kiểm tra
-            console.log("Updated Faculty:", updatedFaculty);
         
             return updatedFaculty;
         }
