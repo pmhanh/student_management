@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Faculty</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="form-container">
+    <h1>Cập nhật tên khoa</h1>
+    <form id="updateFacultyForm">
+      <label for="name">Tên khoa cũ:</label>
+      <input type="text" id="name" name="name" required>
+      <label for="updateFacultyName">Tên khoa mới muốn cập nhật:</label>
+      <input type="text" id="updateFacultyName" name="updateFacultyName" required>
+      <button type="submit">Cập nhật</button>
+    </form>
+  </div>
+  
+  <script>
+    document.getElementById('updateFacultyForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const updateFacultyName = document.getElementById('updateFacultyName').value.trim();
+      console.log(name);
+      console.log(updateFacultyName);
+      try {
+        const response = await fetch(`http://localhost:3000/faculty/${name}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name: updateFacultyName }),
+        });
+        if (response.ok) {
+          alert('Cập nhật khoa thành công');
+        } 
+        else {
+          alert('Tên khoa không tồn tại');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Cập nhật khoa thất bại');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -28,13 +28,18 @@
             <option value="Nữ">Nữ</option>
         </select>
 
-        <label>Khoa:</label>
+        <!-- <label>Khoa:</label>
         <select id="department">
             <option value="Khoa Luật">Khoa Luật</option>
             <option value="Khoa Tiếng Anh thương mại">Khoa Tiếng Anh thương mại</option>
             <option value="Khoa Tiếng Nhật">Khoa Tiếng Nhật</option>
             <option value="Khoa Tiếng Pháp">Khoa Tiếng Pháp</option>
+        </select> -->
+
+        <label for="faculty">Khoa:</label>
+        <select id="faculty" name="faculty" required>
         </select>
+
         <label>Khóa:</label>
         <input type="text" id="course" required>
         <label>Chương trình:</label>
@@ -103,6 +108,23 @@
             });
         }
 
+        async function fetchFaculties() {
+            try {
+                const response = await fetch('http://localhost:3000/faculty');
+                const faculties = await response.json();
+                const facultySelect = document.getElementById('faculty');
+                
+                faculties.forEach(faculty => {
+                const option = document.createElement('option');
+                option.value = faculty._id;
+                option.textContent = faculty.name;
+                facultySelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching faculties:', error);
+            }
+        }
+        fetchFaculties();
     </script>
 </body>
 </html>

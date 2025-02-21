@@ -5,11 +5,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { StudentModule } from './student/student.module';
 import { StudentController } from './student/student.controller';
 import { StudentService } from './student/student.service';
+import { FacultyModule } from './faculty/faculty.module';
 
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb+srv://student_management:student_management@test.kty4o.mongodb.net/'),
-    StudentModule
+    StudentModule,
+    FacultyModule
   ],
   controllers: [AppController],
   providers: [AppService],

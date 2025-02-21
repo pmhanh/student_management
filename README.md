@@ -14,6 +14,9 @@ Dùng NestJS, TypeScript và mongoDB
 - schema: Định nghĩa các schema của MongoDB cho sinh viên.
 - dto: Data Transfer Objects dùng để xác định cấu trúc dữ liệu khi nhận hoặc trả về dữ liệu.
 
+### Database:
+- Sử dụng MongoDB để lưu trữ dữ liệu
+  
 ### Ảnh: folder screenshots Chứa hình ảnh minh chứng
 - Trang chủ
 ![Trang chủ](screenshots/homepage.png)
