@@ -2,7 +2,6 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
 
 
-
 export type FacultyDocument = Faculty & Document;
 
 @Schema()

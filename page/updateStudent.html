@@ -120,10 +120,10 @@
                 document.getElementById("updateGender").value = student.gender;
                 document.getElementById("updateEmail").value = student.email;
                 document.getElementById("updatePhone").value = student.phone;
-                document.getElementById("updateStatus").value = student.status;
-                document.getElementById("updateFaculty").value = student.faculty;
+                document.getElementById("updateStatus").value = student.status._id;
+                document.getElementById("updateFaculty").value = student.faculty._id;
                 document.getElementById("updateCourse").value = student.course;
-                document.getElementById("updateProgram").value = student.program;
+                document.getElementById("updateProgram").value = student.program._id;
             } catch (error) {
                 console.error("Lỗi khi gửi request:", error);
                 alert("Lỗi khi tìm kiếm sinh viên.");

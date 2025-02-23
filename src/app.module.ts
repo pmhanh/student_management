@@ -8,6 +8,7 @@ import { StudentService } from './student/student.service';
 import { FacultyModule } from './faculty/faculty.module';
 import { StatusModule } from './status/status.module';
 import { ProgramModule } from './program/program.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { ProgramModule } from './program/program.module';
     StudentModule,
     FacultyModule,
     StatusModule,
-    ProgramModule
+    ProgramModule,
+    UploadModule
   ],
   controllers: [AppController],
   providers: [AppService],

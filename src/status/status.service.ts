@@ -33,4 +33,12 @@ export class StatusService {
             return await status.save();
         }
     }
+
+    async findByName(name: string): Promise<Status> {
+        const status = await this.statusModel.findOne({ name }).exec();
+        if (!status) {
+            throw new NotFoundException(`Status with name ${name} not found`);
+        }
+        return status;
+    }
 }

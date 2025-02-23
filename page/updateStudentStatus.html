@@ -1,48 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cập nhật tình trạng</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cập nhật tình trạng</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="form-container">
+    <div class="form-container">
     <h1>Cập nhật tình trạng sinh viên</h1>
     <form id="updateStatusForm">
-      <label for="name">Tên tình trạng cũ:</label>
-      <input type="text" id="name" name="name" required>
-      <label for="updateStatusName">Tên tình trạng mới muốn cập nhật:</label>
-      <input type="text" id="updateStatusName" name="updateStatusName" required>
-      <button type="submit">Cập nhật</button>
+        <label for="name">Tên tình trạng cũ:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="updateStatusName">Tên tình trạng mới muốn cập nhật:</label>
+        <input type="text" id="updateStatusName" name="updateStatusName" required>
+        <button type="submit">Cập nhật</button>
     </form>
-  </div>
-  
-  <script>
+    </div>
+    <div class="container">
+        <a href="home.html">Quay lại Trang Chính</a>
+    </div>
+    <script>
     document.getElementById('updateStatusForm').addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const updateStatusName = document.getElementById('updateStatusName').value.trim();
-      try {
+        event.preventDefault();
+        const name = document.getElementById('name').value.trim();
+        const updateStatusName = document.getElementById('updateStatusName').value.trim();
+        try {
         const response = await fetch(`http://localhost:3000/status/${name}`, {
-          method: 'PUT',
-          headers: {
+            method: 'PUT',
+            headers: {
             'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ name: updateStatusName }),
+            },
+            body: JSON.stringify({ name: updateStatusName }),
         });
         if (response.ok) {
-          alert('Cập nhật tình trạng thành công');
+            alert('Cập nhật tình trạng thành công');
         } else if (response.status === 404) {
-          alert('Tình trạng không tồn tại');
+            alert('Tình trạng không tồn tại');
         } else {
-          alert('Cập nhật tình trạng thất bại');
+            alert('Cập nhật tình trạng thất bại');
         }
-      } catch (error) {
+        } catch (error) {
         console.error('Error:', error);
         alert('Cập nhật tình trạng thất bại');
-      }
+        }
     });
-  </script>
+    </script>
 </body>
 </html>

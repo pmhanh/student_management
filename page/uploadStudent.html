@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Danh Sách Sinh Viên</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Upload Danh Sách Sinh Viên</h1>
+    <div class="form-container">
+        <form id="uploadForm" enctype="multipart/form-data">
+            <label>Chọn file Excel:</label>
+            <input type="file" id="fileInput" name="file" accept=".xlsx" required>
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+    <div class="container">
+        <a href="home.html">Quay lại Trang Chính</a>
+    </div>
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const fileInput = document.getElementById('fileInput');
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            console.log(formData);
+            event.preventDefault();
+
+            try {
+                const response = await fetch('http://localhost:3000/upload/students', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                alert(result.message);
+                // document.getElementById('uploadResult').textContent = result.message;
+
+            } catch (error) {
+                console.error('Error uploading file:', error);
+                document.getElementById('uploadResult').textContent = 'Lỗi khi upload file';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -2,6 +2,8 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Student, StudentDocument } from './schema/student.schema';
+import * as dayjs from 'dayjs';
+
 
 @Injectable()
 export class StudentService {
@@ -60,6 +62,24 @@ export class StudentService {
         return this.studentModel.findOne({ studentId }).populate('faculty program status').exec();
     }
 
+    async getStudentsWithPopulatedFields(): Promise<any[]> {
+        const students = await this.studentModel
+          .find()
+          .populate('faculty', 'name')
+          .populate('program', 'name')
+          .populate('status', 'name')
+          .exec();
+        console.log(students);
+        return students.map(student => {
+          return {
+            ...student.toObject(),
+            faculty: student.faculty ? (student.faculty as any).name : null,
+            program: student.program ? (student.program as any).name : null,
+            status: student.status ? (student.status as any).name : null,
+            birthDate: dayjs(student.birthDate).format('YYYY-MM-DD')
+          };
+        });
+      }
     async findByFaculty(facultyId: string): Promise<Student[]> {
         return this.studentModel.find({ faculty: facultyId }).populate('faculty program status').exec();
     }

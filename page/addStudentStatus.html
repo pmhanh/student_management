@@ -1,43 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thêm tình trạng sinh viên</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm tình trạng sinh viên</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="form-container">
+    <div class="form-container">
     <h1>Thêm Tình Trạng Sinh Viên</h1>
     <form id="addStatusForm">
-      <label for="name">Tên Tình Trạng:</label>
-      <input type="text" id="name" name="name" required>
-      <button type="submit">Thêm Tình Trạng</button>
+        <label for="name">Tên Tình Trạng:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Thêm Tình Trạng</button>
     </form>
-  </div>
-  
-  <script>
+    </div>
+    <div class="container">
+        <a href="home.html">Quay lại Trang Chính</a>
+    </div>
+    <script>
     document.getElementById('addStatusForm').addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      try {
+        event.preventDefault();
+        const name = document.getElementById('name').value.trim();
+        try {
         const response = await fetch('http://localhost:3000/status', {
-          method: 'POST',
-          headers: {
+            method: 'POST',
+            headers: {
             'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ name }),
+            },
+            body: JSON.stringify({ name }),
         });
         if (response.ok) {
-          alert('Thêm tình trạng thành công');
+            alert('Thêm tình trạng thành công');
         } else {
-          alert('Thêm tình trạng thất bại');
+            alert('Thêm tình trạng thất bại');
         }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Thêm tình trạng thất bại');
-      }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Thêm tình trạng thất bại');
+        }
     });
-  </script>
+    </script>
 </body>
 </html>

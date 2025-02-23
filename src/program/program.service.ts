@@ -33,4 +33,11 @@ export class ProgramService {
             return await status.save();
         }
     }
+    async findByName(name: string): Promise<Program> {
+        const program = await this.programModel.findOne({ name }).exec();
+        if (!program) {
+            throw new NotFoundException(`Program with name ${name} not found`);
+        }
+        return program;
+    }
 }

@@ -1,0 +1,29 @@
+[
+
+    {
+      "studentId": "2901992",
+      "fullName": "Duy An",
+      "birthDate": "2000-01-01",
+      "gender": "Nam",
+      "falculty": "Khoa luật",
+      "course": "2025",
+      "program": "Tiên tiến",
+      "address": "123 Main St",
+      "email": "jang1@example.com",
+      "phone": "0381123265",
+      "status": "Đang học"
+    },
+    {
+      "studentId": "2901991",
+      "fullName": "Duy Anh",
+      "birthDate": "2004-01-01",
+      "gender": "Nữ",
+      "falculty": "Khoa b",
+      "course": "2023",
+      "program": "Thường",
+      "address": "123 Main St",
+      "email": "jang2@example.com",
+      "phone": "0382931295",
+      "status": "Đã thôi học"
+    }
+  ]

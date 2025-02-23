@@ -5,10 +5,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Program, ProgramSchema } from './program.schema';
 
 @Module({
-  imports : [
+    imports : [
     MongooseModule.forFeature([{ name: Program.name, schema: ProgramSchema}])
-  ],
-  controllers: [ProgramController],
-  providers: [ProgramService]
+    ],
+    controllers: [ProgramController],
+    providers: [ProgramService],
+    exports: [ProgramService]
 })
 export class ProgramModule {}

@@ -12,8 +12,10 @@ export class FacultyService {
         return newFaculty.save();
     }
 
-    async findAll(): Promise<Faculty[]> {
-        return this.facultyModel.find().exec();
+    async findAll(): Promise<FacultyDocument[]> {
+        const faculties = this.facultyModel.find().exec();
+        console.log(faculties)
+        return faculties;
     }
 
     async findOne(name: string): Promise<Faculty | null> {
@@ -37,5 +39,11 @@ export class FacultyService {
         }
         
     }
-    
+    async findByName(name: string): Promise<Faculty> {
+        const faculty = await this.facultyModel.findOne({ name }).exec();
+        if (!faculty) {
+            throw new NotFoundException(`Faculty with name ${name} not found`);
+        }
+        return faculty;
+    }
 }
