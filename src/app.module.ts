@@ -9,6 +9,7 @@ import { FacultyModule } from './faculty/faculty.module';
 import { StatusModule } from './status/status.module';
 import { ProgramModule } from './program/program.module';
 import { UploadModule } from './upload/upload.module';
+import { VersionModule } from './version/version.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { UploadModule } from './upload/upload.module';
     FacultyModule,
     StatusModule,
     ProgramModule,
-    UploadModule
+    UploadModule,
+    VersionModule
   ],
   controllers: [AppController],
   providers: [AppService],

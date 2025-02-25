@@ -55,5 +55,30 @@
         <a href="uploadStudent.html">Thêm file thông tin sinh viên</a>
         <a href="exportStudent.html">Xuất danh sách sinh viên ra file</a>
     </div>
+    
+    <div class="version-info">
+        Phiên bản: <span id="version"></span> | 
+        Ngày build: <span id="buildDate"></span>
+     </div>
+
+    <script>
+        async function fetchVersionInfo() {
+            try {
+                const response = await fetch('http://localhost:3000/version');
+                const data = await response.json();
+                console.log(data);
+                document.getElementById('version').textContent = data.version;
+
+                const buildDate = new Date(data.buildDate).toLocaleString('vi-VN');
+                document.getElementById('buildDate').textContent = buildDate;
+            } catch (error) {
+                console.error('Lỗi khi lấy thông tin version:', error);
+                document.getElementById('version').textContent = 'N/A';
+                document.getElementById('buildDate').textContent = 'N/A';
+            }
+        }
+        window.onload = fetchVersionInfo;
+    </script>
 </body>
+
 </html>
