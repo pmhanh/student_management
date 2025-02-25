@@ -1,6 +1,6 @@
 import { Controller, Post, UploadedFile, UseInterceptors, BadRequestException, Get, Res, Logger} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage, Express } from 'multer';
+import { diskStorage } from 'multer';
 import { UploadService } from './upload.service';
 import { Response } from 'express';
 

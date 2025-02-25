@@ -2,6 +2,7 @@ import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/student.dto';
 import { BadRequestException } from '@nestjs/common';
+import { logError } from 'src/logger';
 
 @Controller('students')
 export class StudentController {
@@ -15,6 +16,7 @@ export class StudentController {
             return await this.studentService.createStudent(studentData);
         } catch (error) {
             if (error.response && error.response.message) {
+                logError('Lỗi khi thêm học sinh: ', error.response.message);
                 throw new BadRequestException(error.response.message);
             }
             throw new BadRequestException('Dữ liệu nhập không hợp lệ.');

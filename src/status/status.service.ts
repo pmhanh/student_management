@@ -2,13 +2,16 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { Status, StatusDocument } from './status.schema';
 import {Model} from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose';
-
+import { logInfo } from 'src/logger';
 @Injectable()
 export class StatusService {
     constructor(@InjectModel(Status.name) private statusModel: Model<StatusDocument>) {}
 
     async createStatus(statusData: string): Promise<Status>{
         const newStatus = new this.statusModel(statusData);
+        const {name} = newStatus;
+        logInfo('Thêm trạng thái học sinh', `Tên: ${name}` );
+
         return newStatus.save();
     }
 
@@ -29,6 +32,8 @@ export class StatusService {
         }
         else
         {
+                logInfo('Cập nhật trạng thái học sinh', `Cũ: ${name} - Mới: ${newStatusName}` );
+            
             status.name = newStatusName;
             return await status.save();
         }

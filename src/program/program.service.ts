@@ -2,13 +2,16 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { Program, ProgramDocument } from './program.schema';
 import {Model} from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose';
-
+import { logInfo } from 'src/logger';
 @Injectable()
 export class ProgramService {
     constructor(@InjectModel(Program.name) private programModel: Model<ProgramDocument>) {}
 
     async createProgram(programData: string): Promise<Program>{
         const newProgram = new this.programModel(programData);
+
+        const {name} = newProgram;
+        logInfo('Thêm chương trình', `Tên: ${name}` );
         return newProgram.save();
     }
 
@@ -21,7 +24,7 @@ export class ProgramService {
     }
 
     async update(name: string, newStatusName: string): Promise<Program | null> {
-        const status = await this.programModel.findOne({ name }).exec();
+        const status = await this.programModel.findOne({ name }).exec();                                                                                                           
         
         if (!status) {
             console.log("sai");
@@ -29,6 +32,7 @@ export class ProgramService {
         }
         else
         {
+            logInfo('Cập nhật chương trình học', `Tên: ${name}` );
             status.name = newStatusName;
             return await status.save();
         }

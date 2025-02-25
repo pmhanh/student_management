@@ -2,13 +2,16 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { Faculty, FacultyDocument } from './faculty.schema';
 import {Model} from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose';
-
+import { logInfo } from 'src/logger';
 @Injectable()
 export class FacultyService {
     constructor(@InjectModel(Faculty.name) private facultyModel: Model<FacultyDocument>) {}
 
     async createFaculty(facultyData: string): Promise<Faculty>{
         const newFaculty = new this.facultyModel(facultyData);
+        const {name} = newFaculty;
+        logInfo('Thêm khoa', `Tên: ${name}'` );
+
         return newFaculty.save();
     }
 
@@ -31,13 +34,12 @@ export class FacultyService {
         }
         else
         {
+            logInfo('Cập nhật tên khoa', `Tên cũ: ${name} - tên mới: ${newFacultyName}'` );
             faculty.name = newFacultyName;
             const updatedFaculty = await faculty.save();
         
-        
             return updatedFaculty;
         }
-        
     }
     async findByName(name: string): Promise<Faculty> {
         const faculty = await this.facultyModel.findOne({ name }).exec();

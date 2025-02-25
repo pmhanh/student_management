@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Student, StudentDocument } from './schema/student.schema';
 import * as dayjs from 'dayjs';
-
+import { logInfo } from 'src/logger';
 
 @Injectable()
 export class StudentService {
@@ -43,6 +43,8 @@ export class StudentService {
     async createStudent(studentData: any): Promise<Student> {
         await this.checkDuplicate(studentData);
         const newStudent = new this.studentModel(studentData);
+        const {studentId} = newStudent;
+        logInfo('Thêm học sinh', `MSSV: ${studentId}`);
         return newStudent.save();
     }
 
@@ -90,6 +92,9 @@ export class StudentService {
 
     async updateStudent(studentId: string, updateData: any): Promise<Student | null> {
         await this.checkDuplicate1(updateData, studentId);
+
+        logInfo('Cập nhật học sinh', `MSSV: ${studentId}`);
+
         return this.studentModel.findOneAndUpdate({ studentId }, updateData, { new: true }).exec();
     }
 
