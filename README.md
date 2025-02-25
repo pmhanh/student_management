@@ -1,3 +1,4 @@
+## Version 1.0
 ### Frontend: folder page
 
 - home.html: Trang chủ của ứng dụng với các liên kết đến các trang tìm kiếm, thêm sinh viên, xóa sinh viên, cập nhật sinh viên.
@@ -56,3 +57,55 @@ Dùng NestJS, TypeScript và mongoDB
 1. Chỉ cần mở file `home.html` 
 2. Go Live để chạy trang home. 
 
+## Version 2.0
+
+### Code
+- Thêm các bảng faculty, status, program để có thể thêm hoặc thay đổi tên khoa, chương trình và trạng thái học sinh.
+
+### Ảnh minh chứng
+
+- Thêm mới khoa 
+![Program](screenshots/addFaculty.png)
+- Đổi tên khoa
+![Program](screenshots/changeFaculty.png)
+
+- Thêm trạng thái học sinh
+![Statua](screenshots/addStatus.png)
+- Đổi trạng thái học sinh
+![Status](screenshots/changeStatus.png)
+- Thêm mới chương trình đào tạo
+![Program](screenshots/demoProgram.png)
+- Đổi tên chương trình đào tạo
+![Program](screenshots/changeProgram.png)
+
+
+- Giao diện tìm kiếm
+![Search](screenshots/search.png)
+- Tìm kiếm theo khoa
+- ![Search](screenshots/searchFaculty.png.png)
+- Tìm kiếm theo tên khoa + tên sinh viên
+![Search](screenshots/searchFacultyAndName.png.png)
+
+- File excel, json
+![Import](screenshots/import.png)
+- Import file excel
+![Import excel](screenshots/importExcel.png)
+![Import excel](screenshots/importExcelResult.png.png)
+- Import file JSON
+![Import json](screenshots/studentJson.png.png)
+![Import json](screenshots/importJson.png.png.png)
+
+- Export file
+![Export](screenshots/exportFile.png)
+- Export file excel
+![Export excel](screenshots/exportExcel.png.png)
+- Export file JSON
+![Export json](screenshots/exportJSON.png)
+
+- Logging mechanism
+![Logging](screenshots/logging.png)
+- Version và ngày build ứng dụng
+![Version + build date](screenshots/version_build.png)
+
+### Deadline
+- Hoàn thành trễ phần tìm kiếm, import/export file excel/JSON, logging mechanism và hiển thị version.

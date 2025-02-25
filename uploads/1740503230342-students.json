@@ -1,0 +1,15 @@
+[
+  {
+    "studentId": "6",
+    "fullName": "Trần Thị C",
+    "birthDate": "2005-09-21",
+    "gender": "Nữ",
+    "faculty": "67b86885e587606c39700aa3",
+    "course": "2025",
+    "program": "67b890691bb1e20e38f090f4",
+    "address": "789 Đường Trần Hưng Đạo, Quận 5, TP.HCM",
+    "email": "tranthic@example.com",
+    "phone": "0987654329",
+    "status": "67b888805e553757c00c5770"
+  }
+] 

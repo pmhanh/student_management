@@ -1,0 +1,15 @@
+[
+  {
+    "studentId": "6",
+    "fullName": "Trần Thị C",
+    "birthDate": "2005-09-21",
+    "gender": "Nữ",
+    "faculty": "Khoa luật",
+    "course": "2025",
+    "program": "Thường",
+    "address": "789 Đường Trần Hưng Đạo, Quận 5, TP.HCM",
+    "email": "tranthic@example.com",
+    "phone": "0987654329",
+    "status": "Đã thôi học"
+  }
+]
