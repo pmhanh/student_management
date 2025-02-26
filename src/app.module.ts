@@ -10,9 +10,13 @@ import { StatusModule } from './status/status.module';
 import { ProgramModule } from './program/program.module';
 import { UploadModule } from './upload/upload.module';
 import { VersionModule } from './version/version.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     MongooseModule.forRoot('mongodb+srv://student_management:student_management@test.kty4o.mongodb.net/'),
     StudentModule,
     FacultyModule,

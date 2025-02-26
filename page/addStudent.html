@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Quản lý Sinh viên</h1>
-    <div id="errorMessages"></div>
+    <!-- <div id="errorMessages"></div> -->
 
     <div class="form-container">
         <h2>Thêm Sinh viên</h2>
@@ -55,6 +55,8 @@
     </div>
     <script>
         async function addOrUpdateStudent() {
+            event.preventDefault();
+            console.log("Bắt đầu gửi request");
             const studentData = {
                 studentId: document.getElementById("studentId").value.trim(),
                 fullName: document.getElementById("fullName").value.trim(),
@@ -77,28 +79,32 @@
 
                 const result = await response.json();
                 if (!response.ok) {
-                    showValidationErrors([result.message]); 
-                    return;
+                    throw new Error(result.message || "Lỗi không xác định");
+                    // showValidationErrors([result.message]); 
+                    // return;
                 }
 
                 alert("Thêm sinh viên thành công!");
-                document.getElementById("errorMessages").innerHTML = "";
+                // document.getElementById("errorMessages").innerHTML = "";
             } catch (error) {
+                alert(error.message);    
+                            
                 console.error("Lỗi khi gửi request:", error);
-                showValidationErrors(["Lỗi không xác định"]); 
+                // showValidationErrors(["Lỗi không xác định"]); 
             }
         }
 
-        function showValidationErrors(errors) {
-            const errorContainer = document.getElementById("errorMessages");
-            errorContainer.innerHTML = "";
+        // function showValidationErrors(errors) {
+        //     event.preventDefault();
+        //     const errorContainer = document.getElementById("errorMessages");
+        //     errorContainer.innerHTML = "";
 
-            errors.forEach(error => {
-                const errorElement = document.createElement("p");
-                errorElement.textContent = error;
-                errorContainer.appendChild(errorElement);
-            });
-        }
+        //     errors.forEach(error => {
+        //         const errorElement = document.createElement("p");
+        //         errorElement.textContent = error;
+        //         errorContainer.appendChild(errorElement);
+        //     });
+        // }
 
         async function fetchFaculties() {
             try {

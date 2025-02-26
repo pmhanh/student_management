@@ -1,19 +1,22 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, Inject } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Student, StudentDocument } from './schema/student.schema';
 import * as dayjs from 'dayjs';
 import { logInfo } from 'src/logger';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class StudentService {
-    constructor(@InjectModel(Student.name) private studentModel: Model<StudentDocument>) {}
+    constructor(@InjectModel(Student.name) private studentModel: Model<StudentDocument>,
+                @Inject(ConfigService) private configService: ConfigService) {}
 
     async checkDuplicate(studentData: any): Promise<void> {
         const { studentId, email, phone } = studentData;
-    
+        console.log(studentId);
         const studentWithSameId = await this.studentModel.findOne({ studentId });
         if (studentWithSameId) {
+            console.log(1);
             throw new BadRequestException('Mã số sinh viên đã tồn tại');
         }
     
@@ -41,11 +44,20 @@ export class StudentService {
         }
     }
     async createStudent(studentData: any): Promise<Student> {
-        await this.checkDuplicate(studentData);
-        const newStudent = new this.studentModel(studentData);
-        const {studentId} = newStudent;
-        logInfo('Thêm học sinh', `MSSV: ${studentId}`);
-        return newStudent.save();
+        const allowedDomain = this.configService.get<string>('ALLOWED_EMAIL_DOMAIN');
+        console.log('Allowed Domain:', allowedDomain);
+        const domain = studentData.email.split('@')[1];
+        if (domain === allowedDomain)
+        {
+            await this.checkDuplicate(studentData);
+            const newStudent = new this.studentModel(studentData);
+            const {studentId} = newStudent;
+            logInfo('Thêm học sinh', `MSSV: ${studentId}`);
+            return newStudent.save();
+        }
+        else
+            throw new BadRequestException('Email không đúng định dạng');
+
     }
 
     // async getStudents(): Promise<Student[]> {

@@ -1,7 +1,7 @@
 {
   "name": "student-management",
   "version": "1.0",
-  "buildDate": "2025-02-25T16:45:07.585Z",
+  "buildDate": "2025-02-26T09:01:51.686Z",
   "description": "",
   "author": "",
   "private": true,
@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
+    "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^11.0.1",
     "@nestjs/mongoose": "^11.0.1",
     "@nestjs/platform-express": "^11.0.10",

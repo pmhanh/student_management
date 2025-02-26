@@ -1,4 +1,6 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsPhoneNumber, Matches } from 'class-validator';
+import { Inject } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsPhoneNumber, Matches, Validate } from 'class-validator';
 import { Types } from 'mongoose';
 
 export class CreateStudentDto {
@@ -28,6 +30,7 @@ export class CreateStudentDto {
 
     @IsNotEmpty({ message: 'Email không được để trống' })
     @IsEmail({}, { message: 'Email không hợp lệ' })
+    // @Validate(EmailDomainValidate, {message: 'Email không thuộc tên miền cho phép'})
     email: string;
 
     @IsNotEmpty({ message: 'Số điện thoại không được để trống' })
