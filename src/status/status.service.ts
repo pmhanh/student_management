@@ -46,4 +46,12 @@ export class StatusService {
         }
         return status;
     }
+
+    async getStatusNameById(statusId: string): Promise<string> {
+        const status = await this.statusModel.findById(statusId).exec();
+        if (!status) {
+            throw new NotFoundException('Status not found');
+        }
+        return status.name;
+    }
 }

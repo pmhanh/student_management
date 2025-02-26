@@ -20,6 +20,18 @@ export class StatusController {
         return this.statusService.findOne(name);
     }
 
+    @Get(':id/name')
+    async getStatusName(@Param('id') statusId: string): Promise<string> {
+        try {
+            return await this.statusService.getStatusNameById(statusId);
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
+            throw new NotFoundException('Error retrieving status name');
+        }
+    }
+        
     @Put(':name')
     async update(@Param('name') name: string, @Body() updateFacultyData: {name: string}) {
         console.log("test: ", name, " " , updateFacultyData);

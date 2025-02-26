@@ -5,6 +5,7 @@ import { Student, StudentDocument } from './schema/student.schema';
 import * as dayjs from 'dayjs';
 import { logInfo } from 'src/logger';
 import { ConfigService } from '@nestjs/config';
+import { StatusService } from 'src/status/status.service';
 
 const phoneFormats: { [key: string]: RegExp } = {
     VN: /^(?:\+84|0)(?:3|5|7|8|9)\d{8}$/,
@@ -13,6 +14,7 @@ const phoneFormats: { [key: string]: RegExp } = {
 @Injectable()
 export class StudentService {
     constructor(@InjectModel(Student.name) private studentModel: Model<StudentDocument>,
+                private readonly statusService: StatusService,
                 @Inject(ConfigService) private configService: ConfigService) {}
 
     async checkDuplicate(studentData: any): Promise<void> {
@@ -123,10 +125,42 @@ export class StudentService {
         return this.studentModel.find({ faculty: facultyName, fullName: { $regex: name, $options: 'i' } }).populate('faculty program status').exec();
     }
 
-    async updateStudent(studentId: string, updateData: any): Promise<Student | null> {
-        await this.checkDuplicate1(updateData, studentId);
+    private validateStatus(currentStatus: string, newStatus: string): void {
+        const statusTransitions = JSON.parse(this.configService.get<string>('STATUS_TRANSITIONS') || '{}');
+        const allowedTransitions = statusTransitions[currentStatus] || [];
 
-        logInfo('Cập nhật học sinh', `MSSV: ${studentId}`);
+        if (!allowedTransitions.includes(newStatus)) {
+            throw new BadRequestException(
+                `Không thể chuyển từ trạng thái "${currentStatus}" sang "${newStatus}"`
+            );
+        }
+    }
+    async updateStudent(studentId: string, updateData: Student): Promise<Student | null> {
+        await this.checkDuplicate1(updateData, studentId);
+        
+        if (updateData.status) {
+            const currentStudent = await this.studentModel.findOne({ studentId }).populate('status');
+            if (!currentStudent) {
+                throw new BadRequestException('Sinh viên không tồn tại');
+            }
+            console.info("hello");
+            const statusId = updateData.status.toString();
+            console.info("statusId:", statusId);
+            
+            const newStatusName = await this.statusService.getStatusNameById(statusId);
+            const currentStatus = (currentStudent.status as any).name;
+            
+            console.info("current status: ", currentStatus);
+            console.info("new status: ", newStatusName);
+            this.validateStatus(currentStatus, newStatusName);
+        }
+        else 
+        {
+            console.info("1");
+        }
+        // console.log("update data: ");
+        // console.log(updateData);
+        // logInfo('Cập nhật học sinh', `MSSV: ${studentId}`);
 
         return this.studentModel.findOneAndUpdate({ studentId }, updateData, { new: true }).exec();
     }
