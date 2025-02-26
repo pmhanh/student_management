@@ -82,23 +82,23 @@ Dùng NestJS, TypeScript và mongoDB
 - Giao diện tìm kiếm
 ![Search](screenshots/search.png)
 - Tìm kiếm theo khoa
-- ![Search](screenshots/searchFaculty.png.png)
+- ![Search](screenshots/searchFaculty.png)
 - Tìm kiếm theo tên khoa + tên sinh viên
-![Search](screenshots/searchFacultyAndName.png.png)
+![Search](screenshots/searchFacultyAndName.png)
 
 - File excel, json
 ![Import](screenshots/import.png)
 - Import file excel
 ![Import excel](screenshots/importExcel.png)
-![Import excel](screenshots/importExcelResult.png.png)
+![Import excel](screenshots/importExcelResult.png)
 - Import file JSON
-![Import json](screenshots/studentJson.png.png)
-![Import json](screenshots/importJson.png.png.png)
+![Import json](screenshots/studentJson.png)
+![Import json](screenshots/importJson.png)
 
 - Export file
 ![Export](screenshots/exportFile.png)
 - Export file excel
-![Export excel](screenshots/exportExcel.png.png)
+![Export excel](screenshots/exportExcel.png)
 - Export file JSON
 ![Export json](screenshots/exportJSON.png)
 
