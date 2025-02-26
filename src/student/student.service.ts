@@ -6,6 +6,10 @@ import * as dayjs from 'dayjs';
 import { logInfo } from 'src/logger';
 import { ConfigService } from '@nestjs/config';
 
+const phoneFormats: { [key: string]: RegExp } = {
+    VN: /^(?:\+84|0)(?:3|5|7|8|9)\d{8}$/,
+
+};
 @Injectable()
 export class StudentService {
     constructor(@InjectModel(Student.name) private studentModel: Model<StudentDocument>,
@@ -43,30 +47,47 @@ export class StudentService {
             throw new BadRequestException('Số điện thoại đã tồn tại');
         }
     }
+
+    private validatePhoneNumber(phone: string): void {
+        const country = this.configService.get<string>('COUNTRY') || 'VN';
+        console.log(country);
+        const regex = phoneFormats[country];
+        if (!regex) {
+        throw new BadRequestException(`Quốc gia ${country} không nằm trong danh  sách số điện thoại`);
+        }
+        if (!regex.test(phone)) {
+            console.log('sai');
+            throw new BadRequestException(`Số điện thoại không hợp lệ cho quốc gia ${country}`);
+        }
+    }
+
+
     async createStudent(studentData: any): Promise<Student> {
+        console.log('Student Data:', studentData); 
+        console.log('Phone:', studentData.phone); 
+    
+        if (!studentData.phone) {
+            console.log('Không có số điện thoại');
+            throw new BadRequestException('Số điện thoại không được để trống');
+        }
+    
+        this.validatePhoneNumber(studentData.phone);
+        console.log('Số điện thoại hợp lệ');
+    
         const allowedDomain = this.configService.get<string>('ALLOWED_EMAIL_DOMAIN');
         console.log('Allowed Domain:', allowedDomain);
         const domain = studentData.email.split('@')[1];
-        if (domain === allowedDomain)
-        {
-            await this.checkDuplicate(studentData);
-            const newStudent = new this.studentModel(studentData);
-            const {studentId} = newStudent;
-            logInfo('Thêm học sinh', `MSSV: ${studentId}`);
-            return newStudent.save();
-        }
-        else
+        if (domain !== allowedDomain) {
             throw new BadRequestException('Email không đúng định dạng');
-
+        }
+    
+        await this.checkDuplicate(studentData);
+    
+        const newStudent = new this.studentModel(studentData);
+        const { studentId } = newStudent;
+        logInfo('Thêm học sinh', `MSSV: ${studentId}`);
+        return newStudent.save();
     }
-
-    // async getStudents(): Promise<Student[]> {
-    //     return this.studentModel.find().exec();
-    // }
-
-    // async getStudentById(studentId: string): Promise<Student | null> {
-    //     return this.studentModel.findOne({ studentId }).exec();
-    // }
 
     async getStudents(): Promise<Student[]> {
         return this.studentModel.find().populate('faculty program status').exec();
