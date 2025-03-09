@@ -84,11 +84,11 @@ export class StudentService {
         }
     
         await this.checkDuplicate(studentData);
-    
-        const newStudent = new this.studentModel(studentData);
+        const newStudent = await this.studentModel.create(studentData);
+        // const newStudent = new this.studentModel(studentData);
         const { studentId } = newStudent;
         logInfo('Thêm học sinh', `MSSV: ${studentId}`);
-        return newStudent.save();
+        return newStudent;//.save();
     }
 
     async getStudents(): Promise<Student[]> {
