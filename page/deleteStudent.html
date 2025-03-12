@@ -8,6 +8,8 @@
 
 </head>
 <body>
+    <h1>Đại học Khoa học Tự nhiên</h1>
+
     <h1>Xóa Sinh Viên</h1>
     <div class="form-container">
         <label>MSSV:</label>
@@ -28,6 +30,7 @@
                 });
 
                 const result = await response.json();
+                console.log('result message: ', result);
                 if (!response.ok) {
                     alert(result.message || "Không thể xóa sinh viên.");
                     return;

@@ -37,6 +37,9 @@ export class Student {
 
     @Prop({ type: Types.ObjectId, ref: 'Status', required: true })
     status: Types.ObjectId;
+
+    @Prop({type: Date, default: Date.now})
+    createdAt: Date 
 }
 
 export const StudentSchema = SchemaFactory.createForClass(Student);

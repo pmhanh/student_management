@@ -44,8 +44,14 @@ export class StudentController {
     update(@Param('studentId') studentId: string, @Body() updateData: any) {
         return this.studentService.updateStudent(studentId, updateData);
     }
+
     @Delete(':studentId')
-    remove(@Param('studentId') studentId: string) {
-        return this.studentService.deleteStudent(studentId);
+    async remove(@Param('studentId') studentId: string) {
+        try {
+            await this.studentService.deleteStudent(studentId);
+            return { message: 'Sinh viên đã được xóa.' };
+        } catch (error) {
+            throw new BadRequestException(error.message || 'Không thể xóa sinh viên.');
+        }
     }
 }

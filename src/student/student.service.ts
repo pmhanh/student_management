@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException, Inject } from '@nestjs/common';
+import { Injectable, BadRequestException, Inject, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Student, StudentDocument } from './schema/student.schema';
@@ -167,6 +167,20 @@ export class StudentService {
 
 
     async deleteStudent(studentId: string): Promise<Student | null> {
-        return this.studentModel.findOneAndDelete({ studentId }).exec();
+        const student = await this.studentModel.findOne({studentId}).exec();
+        if (!student)
+            throw new NotFoundException('Không tìm thấy học sinh');
+        const country = this.configService.get<string>('COUNTRY') || 'VN';
+        const limitTime = this.configService.get<number>('DELETE_STUDENT_TIME') || 30;
+        console.log('limit time: ',limitTime);
+        console.log('student.createdAt.getTime(): ', student.createdAt.getTime());
+
+        const now = new Date();
+        console.log('now.getTime(): ', now.getTime());
+
+        if (now.getTime() - student.createdAt.getTime() > limitTime*60*1000)
+            throw new ForbiddenException(`Không thể xóa học sinh sau ${limitTime} phút khi tạo.`);
+        else 
+            return this.studentModel.findOneAndDelete({ studentId }).exec();
     }
 }
