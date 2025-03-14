@@ -149,6 +149,9 @@ export class StudentService {
         return this.studentModel.find({status: statusId}).exec();
     }
 
+    async getStudentWithProgram(programId: string): Promise<Student[]> {
+        return this.studentModel.find({program: programId}).exec();
+    }
     async findByFacultyAndName(facultyName: string, name: string): Promise<Student[]> {
         return this.studentModel.find({ faculty: facultyName, fullName: { $regex: name, $options: 'i' } }).populate('faculty program status').exec();
     }

@@ -1,12 +1,15 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, ForbiddenException, Inject, forwardRef } from '@nestjs/common';
 import { Program, ProgramDocument } from './program.schema';
 import {Model} from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose';
 import { logInfo } from 'src/logger';
 import { promises } from 'dns';
+import { StudentService } from 'src/student/student.service';
 @Injectable()
 export class ProgramService {
-    constructor(@InjectModel(Program.name) private programModel: Model<ProgramDocument>) {}
+    constructor(@InjectModel(Program.name) private programModel: Model<ProgramDocument>,
+                @Inject(forwardRef(() => StudentService)) private studentService: StudentService,) {}
+    
 
     async createProgram(programData: string): Promise<Program>{
         const newProgram = new this.programModel(programData);
@@ -38,7 +41,7 @@ export class ProgramService {
             return await status.save();
         }
     }
-    async findByName(name: string): Promise<Program> {
+    async findByName(name: string) {
         const program = await this.programModel.findOne({ name }).exec();
         if (!program) {
             throw new NotFoundException(`Program with name ${name} not found`);
@@ -51,5 +54,17 @@ export class ProgramService {
         if (!status)
             throw new NotFoundException('Không tìm thấy chương trình đào tạo');
         return status.name;
+    }
+
+    async deleteProgramByName(programName: string): Promise<any>{
+        const program = await this.findByName(programName);
+        console.log('program: ',program);
+        
+        const studentWithStatus = await this.studentService.getStudentWithProgram(program.id);
+        console.log(studentWithStatus);
+        if (studentWithStatus.length > 0) {
+            throw new ForbiddenException('Không thể xóa trạng thái vì có sinh viên đang ở trạng thái này.');
+        }
+        return this.programModel.findOneAndDelete({ name: programName }).exec();
     }
 }

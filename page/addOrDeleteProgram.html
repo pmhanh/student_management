@@ -18,6 +18,14 @@
         <input type="text" id="name" name="name" required>
         <button type="submit">Thêm chương trình</button>
     </form>
+
+    <h1>Xóa chương trình đào tạo</h1>
+    <form id="deleteProgramForm">
+        <label for="deleteName">Tên chương trình:</label>
+        <input type="text" id="deleteName" name="deleteName" required>
+        <button type="submit">Xóa chương trình</button>
+    </form>
+
     </div>
     <div class="container">
         <a href="home.html">Quay lại Trang Chính</a>
@@ -42,6 +50,27 @@
             } catch (error) {
             console.error('Error:', error);
             alert('Thêm chương trình thất bại');
+            }
+        });
+
+        document.getElementById('deleteProgramForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const name = document.getElementById('deleteName').value.trim();
+            try {
+            const response = await fetch(`http://localhost:3000/program/${name}`, {
+                method: 'DELETE',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+            });
+            if (response.ok) {
+                alert('Xóa chương trình thành công');
+            } else {
+                alert('Xóa chương trình thất bại');
+            }
+            } catch (error) {
+            console.error('Error:', error);
+            alert('Xóa chương trình thất bại');
             }
         });
     </script>
