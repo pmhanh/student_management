@@ -16,6 +16,13 @@
         <input type="text" id="name" name="name" required>
         <button type="submit">Thêm Tình Trạng</button>
     </form>
+
+    <h1>Xóa Tình Trạng Sinh Viên</h1>
+    <form id="deleteStatusForm">
+        <label for="deleteName">Tên Tình Trạng:</label>
+        <input type="text" id="deleteName" name="deleteName" required>
+        <button type="submit">Xóa Tình Trạng</button>
+    </form>
     </div>
     <div class="container">
         <a href="home.html">Quay lại Trang Chính</a>
@@ -40,6 +47,26 @@
         } catch (error) {
             console.error('Error:', error);
             alert('Thêm tình trạng thất bại');
+        }
+    });
+    document.getElementById('deleteStatusForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const name = document.getElementById('deleteName').value.trim();
+        try {
+        const response = await fetch(`http://localhost:3000/status/${name}`, {
+            method: 'DELETE',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+        });
+        if (response.ok) {
+            alert('Xóa tình trạng thành công');
+        } else {
+            alert('Xóa tình trạng thất bại');
+        }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Xóa tình trạng thất bại');
         }
     });
     </script>

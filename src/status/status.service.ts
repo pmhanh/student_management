@@ -1,11 +1,13 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, ForbiddenException, Inject, forwardRef } from '@nestjs/common';
 import { Status, StatusDocument } from './status.schema';
 import {Model} from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose';
 import { logInfo } from 'src/logger';
+import { StudentService } from 'src/student/student.service';
 @Injectable()
 export class StatusService {
-    constructor(@InjectModel(Status.name) private statusModel: Model<StatusDocument>) {}
+    constructor(@InjectModel(Status.name) private statusModel: Model<StatusDocument>,
+                @Inject(forwardRef(() => StudentService)) private studentService: StudentService,) {}
 
     async createStatus(statusData: string): Promise<Status>{
         const newStatus = new this.statusModel(statusData);
@@ -39,7 +41,7 @@ export class StatusService {
         }
     }
 
-    async findByName(name: string): Promise<Status> {
+    async findByName(name: string) {
         const status = await this.statusModel.findOne({ name }).exec();
         if (!status) {
             throw new NotFoundException(`Status with name ${name} not found`);
@@ -53,5 +55,17 @@ export class StatusService {
             throw new NotFoundException('Status not found');
         }
         return status.name;
+    }
+
+    async deleteStatusByName(statusName: string): Promise<any>{
+        const status = await this.findByName(statusName);
+        console.log('status: ',status);
+        
+        const studentWithStatus = await this.studentService.getStudentWithStatus(status.id);
+        console.log(studentWithStatus);
+        if (studentWithStatus.length > 0) {
+            throw new ForbiddenException('Không thể xóa trạng thái vì có sinh viên đang ở trạng thái này.');
+        }
+        return this.statusModel.findOneAndDelete({ name: statusName }).exec();
     }
 }

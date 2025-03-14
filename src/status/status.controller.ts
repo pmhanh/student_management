@@ -1,4 +1,4 @@
-import { Controller, Put, Post, Body, Get, Param , NotFoundException} from '@nestjs/common';
+import { Controller, Put, Post, Body, Get, Param , NotFoundException, Delete, BadRequestException} from '@nestjs/common';
 import { StatusService } from './status.service';
 
 @Controller('status')
@@ -36,6 +36,21 @@ export class StatusController {
     async update(@Param('name') name: string, @Body() updateFacultyData: {name: string}) {
         console.log("test: ", name, " " , updateFacultyData);
         return this.statusService.update(name, updateFacultyData.name);
+
+    }
+
+    @Delete(':name')
+    async remove(@Param('name') name: string)
+    {
+        try{
+            console.log("name delete faculty: ", name);
+            await this.statusService.deleteStatusByName(name);
+            return {message: 'Khoa đã được xóa thành công.'};
+        }catch(error)
+        {
+            throw new BadRequestException(error.message || 'Không thể xóa khoa.');
+            
+        }
 
     }
 }
