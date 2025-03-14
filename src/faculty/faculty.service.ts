@@ -67,8 +67,9 @@ export class FacultyService {
         // }
         const faculty = await this.findByName(facultyName);
         console.log('faculty: ',faculty);
+        
         // const studentInFaculty = await this.studentModel.find({ faculty: faculty._id }).exec();
-        const studentInFaculty = await this.studentService.getStudentInFaculty(facultyName);
+        const studentInFaculty = await this.studentService.getStudentInFaculty(faculty.id);
         console.log(studentInFaculty);
         if (studentInFaculty.length > 0) {
             throw new ForbiddenException('Không thể xóa khoa này vì có sinh viên đang học');

@@ -142,8 +142,8 @@ export class StudentService {
         return this.studentModel.find({ faculty: facultyId }).populate('faculty program status').exec();
     }
 
-    async getStudentInFaculty(facultyName: string): Promise<Student[]> {
-        return this.studentModel.find({faculty: facultyName}).populate('faculty').exec();
+    async getStudentInFaculty(facultyId: string): Promise<Student[]> {
+        return this.studentModel.find({faculty: facultyId}).exec();
     }
 
     async findByFacultyAndName(facultyName: string, name: string): Promise<Student[]> {
