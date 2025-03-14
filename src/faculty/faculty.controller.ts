@@ -1,4 +1,4 @@
-import { Controller, Put, Post, Body, Get, Param , NotFoundException} from '@nestjs/common';
+import { Controller, Put, Post, Body, Get, Param , NotFoundException, Delete, BadRequestException} from '@nestjs/common';
 import { FacultyService } from './faculty.service';
 
 @Controller('faculty')
@@ -28,4 +28,19 @@ export class FacultyController {
 
     }
 
+    @Delete(':name')
+    async remove(@Param('name') name: string)
+    {
+        try{
+            console.log("name delete faculty: ", name);
+            await this.facultyService.deleteFacultyByName(name);
+            return {message: 'Khoa đã được xóa thành công.'};
+        }catch(error)
+        {
+            throw new BadRequestException(error.message || 'Không thể xóa khoa.');
+            
+        }
+
+    }
+    
 }

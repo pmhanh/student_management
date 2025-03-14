@@ -17,6 +17,16 @@
             <button type="submit">Thêm</button>
         </form>
     </div>
+
+    <h1>Xóa khoa</h1>
+    <div class="form-container">
+        <form id="deleteFacultyForm">
+            <label for="nameDelete">Tên khoa:</label>
+            <input type="text" id="nameDelete" name="nameDelete" required>
+            <button type="submit">Xóa</button>
+        </form>
+    </div>
+
     <div class="container">
         <a href="home.html">Quay lại Trang Chính</a>
     </div>
@@ -25,23 +35,49 @@
             event.preventDefault();
             const name = document.getElementById('name').value;
             try {
-            const response = await fetch('http://localhost:3000/faculty', {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name }),
-            });
-            if (response.ok) {
-                alert('Faculty added successfully');
-            } else {
-                alert('Failed to add faculty');
-            }
+                const response = await fetch('http://localhost:3000/faculty', {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name }),
+                });
+                if (response.ok) {
+                        alert('Faculty added successfully');
+                } else {
+                    alert('Failed to add faculty');
+                }
             } catch (error) {
                 console.error('Error:', error);
                 alert('Failed to add faculty');
             }
         });
+
+        document.getElementById('deleteFacultyForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const name = document.getElementById('nameDelete').value; 
+            
+            console.log("Tên khoa cần xóa:", name);
+
+            try {
+                const response = await fetch(`http://localhost:3000/faculty/${name}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                
+                if (response.ok) {
+                    alert('Faculty removed successfully');
+                } else {
+                    alert('Failed to remove faculty');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to remove faculty');
+            }
+        });
+
     </script>
 </body>
 </html>

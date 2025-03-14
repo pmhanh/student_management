@@ -3,6 +3,7 @@ import { Program, ProgramDocument } from './program.schema';
 import {Model} from 'mongoose'
 import { InjectModel } from '@nestjs/mongoose';
 import { logInfo } from 'src/logger';
+import { promises } from 'dns';
 @Injectable()
 export class ProgramService {
     constructor(@InjectModel(Program.name) private programModel: Model<ProgramDocument>) {}
@@ -43,5 +44,12 @@ export class ProgramService {
             throw new NotFoundException(`Program with name ${name} not found`);
         }
         return program;
+    }
+
+    async getProgramNameById(programId: string): Promise<string>{
+        const status = await this.programModel.findById(programId).exec();
+        if (!status)
+            throw new NotFoundException('Không tìm thấy chương trình đào tạo');
+        return status.name;
     }
 }

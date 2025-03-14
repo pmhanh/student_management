@@ -3,10 +3,12 @@ import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/student.dto';
 import { BadRequestException } from '@nestjs/common';
 import { logError } from 'src/logger';
+import { FacultyService } from 'src/faculty/faculty.service';
 
 @Controller('students')
 export class StudentController {
-    constructor(private readonly studentService: StudentService) {}
+    constructor(private readonly studentService: StudentService,
+    ) {}
 
     @Post()
     async create(@Body() studentData: CreateStudentDto) {
@@ -25,7 +27,7 @@ export class StudentController {
 
     @Get()
     find(@Query('faculty') faculty?: string, @Query('name') name?: string) {
-        if (faculty && name) {
+        if (faculty && name) {                                                                                    
             return this.studentService.findByFacultyAndName(faculty, name);
         } else if (faculty) {
             return this.studentService.findByFaculty(faculty);
@@ -38,13 +40,26 @@ export class StudentController {
     findOne(@Param('studentId') studentId: string) {
         return this.studentService.getStudentById(studentId);
     }
-
     
     @Put(':studentId')
     update(@Param('studentId') studentId: string, @Body() updateData: any) {
         return this.studentService.updateStudent(studentId, updateData);
     }
+    @Get(':studentId/confirmation')
+    async getConfirmation(@Param('studentId') studentId: string, @Query('format') format: string, @Query('purpose') purpose: string){
+        console.log('purpose', purpose)
 
+        const student = await this.studentService.getAllStudentInfo(studentId);
+        if (!student)
+            throw new BadRequestException('Sinh viên không tồn tại')
+        if (format === 'pdf'){
+            return this.studentService.exportHTML(student, purpose);
+        }
+        else if (format === 'md')
+            return this.studentService.exportMD(student, purpose);
+        else throw new BadRequestException('Định dạng không hợp lệ.');
+    }
+    
     @Delete(':studentId')
     async remove(@Param('studentId') studentId: string) {
         try {

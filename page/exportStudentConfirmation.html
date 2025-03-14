@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xuất Giấy Xác Nhận Sinh Viên</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Xuất Giấy Xác Nhận Tình Trạng Sinh Viên</h1>
+    <div class="form-container">
+
+        <label for="studentId">Mã số sinh viên:</label>
+        <input type="text" id="studentId" name="studentId" required>
+
+        <label for="format">Chọn định dạng:</label>
+        <select id="format">
+            <option value="md">Markdown</option>
+            <option value="pdf">HTML</option>
+        </select>
+
+        <label for="purpose">Mục đích xác nhận</label>
+        <select name="" id="purpose">
+            <option value="vayvon">Xác nhận đang học để vay vốn ngân hàng</option>
+            <option value="tamhoan">Xác nhận làm thủ tục tạm hoãn nghĩa vụ quân sự</option>
+            <option value="hoso">Xác nhận làm hồ sơ xin việc / thực tập</option>
+        </select>
+        <button onclick="generateConfirmation()">Xuất Giấy Xác Nhận</button>
+    </div>
+
+    <div class="container">
+        <a href="home.html">Quay lại Trang Chính</a>
+    </div>
+    <script>
+        async function generateConfirmation() {
+            const studentId = document.getElementById('studentId').value;
+            const format = document.getElementById('format').value;
+            const purpose = document.getElementById('purpose').value;
+            if (!studentId || !format) {
+                alert("Vui lòng điền đầy đủ thông tin.");
+                return;
+            }
+            try {
+                const response = await fetch(`http://localhost:3000/students/${studentId}/confirmation?format=${format}&purpose=${purpose}`, {
+                    method: 'GET',
+
+                });
+                
+                if (response.ok) {
+                        alert('Xuất file xác nhận thành công.');
+                } else {
+                    alert('Đã có lỗi xảy ra khi yêu cầu dữ liệu.');
+                }
+            } catch (error) {
+                alert('Lỗi kết nối đến máy chủ.');
+            }
+        }
+    </script>
+</body>
+</html>

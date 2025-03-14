@@ -1,7 +1,7 @@
 {
   "name": "student-management",
   "version": "1.0",
-  "buildDate": "2025-03-12T07:24:25.562Z",
+  "buildDate": "2025-03-14T12:24:22.376Z",
   "description": "",
   "author": "",
   "private": true,
@@ -30,6 +30,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dayjs": "^1.11.13",
+    "jspdf": "^3.0.0",
     "mongoose": "^8.10.0",
     "multer": "^1.4.5-lts.1",
     "reflect-metadata": "^0.2.2",

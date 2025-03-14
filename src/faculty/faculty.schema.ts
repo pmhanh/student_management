@@ -11,4 +11,5 @@ export class Faculty{
 
 }
 
+
 export const FacultySchema = SchemaFactory.createForClass(Faculty);
